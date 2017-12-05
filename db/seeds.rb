@@ -1,7 +1,7 @@
 require 'csv'
 
 #marvin /Users/marvinclerge/Development/Projects/module-one-final-project-guidelines-web-112017/db/ww2.csv'
-#Listing.create(title: Faker::Name.name)
+#matt /Users/mattfaircloth/Development/module-projects/module-one-final-project-guidelines-web-112017/db/ww2.csv
 
 doc = CSV.read('/Users/marvinclerge/Development/Projects/module-one-final-project-guidelines-web-112017/db/ww2.csv')
 #0 weapon, 1 tyoe, 2 country
