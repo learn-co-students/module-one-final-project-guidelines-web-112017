@@ -1,0 +1,8 @@
+adam = User.create(name: "Adam", age: 27, fitness: 8)
+ali = User.create(name: "Ali", age: 23, fitness:7)
+Playlist.create(name: "Pump Up", num_songs: 23, genre: "jazz", rating: 3)
+Playlist.create(name: "Running playlist", num_songs: 98, genre: "Pop", rating: 6)
+Location.create(name: "pool", cleanliness: 1, empty?: true)
+Location.create(name: "weights", cleanliness: 4, empty?: false)
+adam_workout = Workout.create(time: Time.new, user_id: 1, location_id: 1, calories_burned: 300, duration_mins: 20, rating: 8, description: "I swam in the pool and nobody was there.", playlist_id: 1)
+ali_workout = Workout.create(time: Time.new, user_id: 2, location_id: 2, calories_burned: 100, duration_mins: 15, rating: 6, description: "Gettin BIG", playlist_id: 2)
