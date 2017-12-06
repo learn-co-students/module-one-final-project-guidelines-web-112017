@@ -11,5 +11,5 @@ csv = CSV.read('presidents.csv', headers: :first_row)
 # FIRST NAME,LAST NAME,IN OFFICE,ORDER,State,Age elected,NICKNAME,Trivia,Rank
 
 csv.each do |row|
-  President.create(name: "#{row[0]} #{row[1]}", description: row[6], fact: row[7], rank: row[8])
+  President.create(name: "#{row[0]} #{row[1]}", description: row[6], fact: row[7], rank: row[8], strength: row[9], dexterity: row[10], stamina: row[11], wisdom: row[12], intelligence: row[13], charisma: row[14])
 end
