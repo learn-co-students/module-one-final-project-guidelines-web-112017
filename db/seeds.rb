@@ -1,4 +1,7 @@
 require 'csv'
+require_relative '../lib/scraper.rb'
+
+puts data
 
 #marvin /Users/marvinclerge/Development/Projects/module-one-final-project-guidelines-web-112017/db/ww2.csv'
 #matt /Users/mattfaircloth/Development/module-projects/module-one-final-project-guidelines-web-112017/db/ww2.csv
@@ -23,4 +26,14 @@ doc[1..-1].each do |x|
     country_id: Country.all.find{|country| country.name == x[2].squish}.id,
     weapon_id: Weapon.all.find{|weapon| weapon.name == x[0].squish}.id
   )
+end
+
+data.each do |hash|
+  Weapon.all.each do |weapon|
+    if weapon.name == hash[:text]
+      weapon.caliber = hash[:caliber]
+      weapon.weight = hash[:weight]
+      weapon.range = hash[:range]
+    end
+  end
 end
