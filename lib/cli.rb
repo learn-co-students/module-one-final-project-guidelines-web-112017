@@ -22,7 +22,7 @@ class Cli
       @current_user = User.create(name: login_name)
       puts "Your id number is #{@current_user.id}"
     end
-    puts "Helllo #{@current_user.name}"
+    puts "Hello #{@current_user.name}"
     #get fitness level
   end
 
@@ -55,6 +55,18 @@ class Cli
       duration = gets.chomp.to_i
       puts "You can add any notes about your workout here:"
       notes = gets.chomp
+
+      @new_workout = Workout.create(
+        time: Time.new,
+        user: @current_user,
+        location: Location.find(loc_select),
+        calories_burned: calories,
+        duration_mins: duration,
+        rating: rating,
+        description: notes,
+        playlist: Playlist.find(play_select)
+      )
+
     else
       #update which thing
       puts "Which workout do you want to edit?"
@@ -66,16 +78,48 @@ class Cli
       puts "Which workout detail do you want to edit?"
       puts "Select a number below: \n 1. Time of day \n 2. Facility \n 3. Calories Burned \n 4. Duration \n 5. Rating \n 6. Notes \n 7. Playlist"
       item_edit = gets.chomp.to_i
-      puts "Type in the change for your selection"
-      change = gets.chomp #display options for that detail
+      loc_select = Workout.find(wo_id).location.id
+      play_select = Workout.find(wo_id).playlist.id
+
+      case item_edit
+        when 1
+          puts "Select 1 for morning or 2 for evening"
+          time_select = gets.chomp.to_i
+          if time_select == 1
+            time = "Morning"
+          else
+            time = "Evening"
+          end
+        when 2
+          puts "Which facility did you use?"
+          puts "Select a number below: \n 1. Pool \n 2. Cardio Room \n 3. Weight Room \n 4. Yoga Studio"
+          loc_select = gets.chomp.to_i
+        when 3
+          puts "How many calories did you burn?"
+          calories = gets.chomp.to_i
+        when 4
+          puts "How many minutes did you spend in your workout?"
+          duration = gets.chomp.to_i
+        when 5
+          puts "How would you rate your workout on a scale of 1 to 10"
+          rating = gets.chomp.to_i
+        when 6
+          puts "You can add any notes about your workout here:"
+          notes = gets.chomp
+        when 7
+          puts "Which playlist did you listen to?"
+          puts "Select a number below: \n 1. Pump Up Jams \n 2. Smooth Jazz \n 3. Classic Rock \n 4. Hip-Hop"
+          play_select = gets.chomp.to_i
+      end
+
       select_hash = {
-        1 => {time: change},
-        2 => {location: change},
-        3 => {calories_burned: change},
-        4 => {duration_mins: change},
-        5 => {rating: change},
-        6 => {description: change},
-        7 => {playlist: change}
+        1 => {time: Time.new}, #going to fix
+        2 => {location: Location.find(loc_select)},
+        3 => {calories_burned: calories},
+        4 => {duration_mins: duration},
+        5 => {rating: rating},
+        6 => {description: notes},
+        7 => {playlist: Playlist.find(play_select)}
       }
       Workout.find(wo_id).update(select_hash[item_edit])
       #if they want to update more than one detail of a workout
