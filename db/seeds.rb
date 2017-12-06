@@ -1,7 +1,6 @@
 require 'csv'
 require_relative '../lib/scraper.rb'
 
-puts data
 
 #marvin /Users/marvinclerge/Development/Projects/module-one-final-project-guidelines-web-112017/db/ww2.csv'
 #matt /Users/mattfaircloth/Development/module-projects/module-one-final-project-guidelines-web-112017/db/ww2.csv
@@ -16,12 +15,10 @@ Country.all.each { |x| x.destroy }
 doc[1..-1].each do |x|
   Type.find_or_create_by(name: "#{x[1]}".squish)
   Country.find_or_create_by(name: "#{x[2]}".squish)
-  # binding.pry
   Weapon.create(
     name: "#{x[0]}".squish,
     type_id: Type.all.find{|a| a.name == x[1].squish}.id
   )
-# binding.pry
   CountryWeapon.create(
     country_id: Country.all.find{|country| country.name == x[2].squish}.id,
     weapon_id: Weapon.all.find{|weapon| weapon.name == x[0].squish}.id

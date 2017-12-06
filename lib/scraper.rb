@@ -2,60 +2,29 @@ require_relative '../config/environment'
 require 'nokogiri'
 require 'open-uri'
 
+doc2 = Nokogiri::HTML(open("https://ww2db.com/weapon.php?list=a"))
 
-doc = Nokogiri::HTML(open("https://ww2db.com/weapon.php?list=a"))
-
-
-data = doc.css('tr').css('td').css('a').map do |x|
-  {text: x.text, link: x.values[0]}
+data = doc2.css('tr').css('td').css('a').map do |x|
+  {name: x.text, link: x.values[0]}
 end[6..-1]
 
 
-# binding.pry
-
 data.each do |hash| #{:key => value}
-  doc = Nokogiri::HTML(open("https://ww2db.com/" + hash[:link]))
-  code = doc.css(".table_noborder").css('tr').css('td')
+  doc2 = Nokogiri::HTML(open("https://ww2db.com/" + hash[:link]))
+  code = doc2.css(".table_noborder").css('tr').css('td')
   code.each_with_index do |x,i| #:link, "weapon.php?q=a193"
     if x.text == "Caliber"
-      puts "Getting caliber for #{hash[:text]}"
+      puts "Getting values for #{hash[:name]}"
       hash[:caliber] = code[i+1].text
-      break
+    end
+
+    if x.text == "Weight"
+      hash[:weight] = code[i+1].text
+    end
+
+    if x.text == "Range"
+      hash[:range] = code[i+1].text
+      sleep 3
     end
   end
 end
-
-
-
-  data.each do |hash| #:link, "weapon.php?q=a193"
-    doc = Nokogiri::HTML(open("https://ww2db.com/" + hash[:link]))
-    code = doc.css(".table_noborder").css('tr').css('td')
-    code.each_with_index do |x,i|
-      if x.text == "Weight"
-        # binding.pry
-        puts "Getting weight for #{hash[:text]}"
-        hash[:weight] = code[i+1].text
-        break
-      end
-    end
-  end
-
-
-
-  data.each do |hash| #:link, "weapon.php?q=a193"
-    doc = Nokogiri::HTML(open("https://ww2db.com/" + hash[:link]))
-    code = doc.css(".table_noborder").css('tr').css('td')
-    code.each_with_index do |x,i|
-      if x.text == "Range"
-        puts "Getting range for #{hash[:text]}"
-        hash[:range] = code[i+1].text
-        break
-      end
-    end
-  end
-
-
-
-# data[0][:caliber]
-# data[0][:range]
-# data[0][:weight]
