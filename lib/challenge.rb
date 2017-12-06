@@ -1,21 +1,20 @@
 class Challenge
 
-  attr_reader :challenges, :player1, :player2
-  attr_accessor :picked_prezzies, :player1_points, :player2_points, :game, :squad1, :squad2
+  attr_reader :player1, :player2
+  attr_accessor :picked_prezzies, :player1_points, :player2_points, :game, :squad1, :squad2, :challenges
 
   def initialize(player1, player2)
     @player1 = player1
     @player2 = player2
     @challenges = [
       {name: "Sell Girl Scout Cookies", stat: ["charisma"]},
-      {name: "Eat McDonalds Sandwiches", stat: ["fortitude"]},
-      {name: "Win a Drag Race", stat: ["speed"]},
-      {name: "Settle a Disagreement", stat: ["empathy", "charisma"]},
-      {name: "Housesit for You", stat: ["empathy"]},
+      {name: "Eat McDonalds Sandwiches", stat: ["stamina"]},
+      {name: "Win a Drag Race", stat: ["dexterity"]},
+      {name: "Settle a Disagreement", stat: ["wisdom", "charisma"]},
+      {name: "Housesit for You", stat: ["wisdom"]},
       {name: "Win a Boxing Match", stat: ["strength"]},
-      {name: "Paint Your Portait", stat: ["creativity"]}
+      {name: "Paint Your Portait", stat: ["intelligence", "charisma"]}
     ]
-
     @picked_prezzies = []
     @player1_points = 0
     @player2_points = 0
@@ -27,26 +26,26 @@ class Challenge
 
   def start_challenge
     pick_squads
-    1.times do
+    3.times do
       give_challenge
     end
     if self.player1_points > self.player2_points
-      puts "Congratulations #{player1.name}! You win!"
-      self.game.winner_id = self.player1.id
-      self.game.loser_id = self.player2.id
-      game.save
+      results(self.player1, self.player2)
     else
-      puts "Congratulations #{player2.name}! You win!"
-      self.game.winner_id = self.player2.id
-      self.game.loser_id = self.player1.id
-      game.save
+      results(self.player2, self.player1)
     end
   end
 
+  def results(winner, loser)
+    puts "Congratulations #{winner.name}! You win!"
+    self.game.winner_id = winner.id
+    self.game.loser_id = loser.id
+    game.save
+  end
+
   def give_challenge
-    challenges.shuffle
-    chal = challenges.pop
-    # challenges.delete(chal)
+    self.challenges = self.challenges.shuffle
+    chal = self.challenges.pop
     puts "Choose a president to represent you for:"
     puts chal[:name]
     winner = fight_helper(chal[:stat])
@@ -108,7 +107,7 @@ class Challenge
   end
 
   def pick_alternator(squad1, squad2)
-    1.times do
+    3.times do
       display_available
       pick1 = squad_pick(player1)
       squad1.picks << Pick.create(president: pick1)
@@ -127,11 +126,16 @@ class Challenge
   end
 
   def squad_pick(player)
-    puts "#{player.name}: choose a president for your squad (spelling counts):"
+    puts "#{player.name}: choose a president for your squad:"
     input = gets.chomp
     prez = President.find_by(name: input)
-    picked_prezzies << prez
-    prez
+    if prez
+      picked_prezzies << prez
+      prez
+    else
+      puts "Invalid input."
+      squad_pick(player)
+    end
   end
 
 end
