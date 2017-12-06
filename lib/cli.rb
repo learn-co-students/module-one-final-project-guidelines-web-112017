@@ -28,7 +28,7 @@ class Cli
 
   def self.get_workout_info
     puts "Let's log your workout"
-    puts "Press 1 to log a new workout or 2 to edit an existing workout"
+    puts "Press 1 to log a new workout or 2 to edit an existing workout or 3 to see your stats"
     selection = gets.chomp.to_i
     if selection == 1
       puts "What time did you workout?"
@@ -67,7 +67,7 @@ class Cli
         playlist: Playlist.find(play_select)
       )
 
-    else
+    elsif selection == 2
       #update which thing
       puts "Which workout do you want to edit?"
       @current_user.workouts.each do |w|
@@ -123,9 +123,56 @@ class Cli
       }
       Workout.find(wo_id).update(select_hash[item_edit])
       #if they want to update more than one detail of a workout
+    elsif selection == 3
+      puts "Loading stats menu..."
+    else
+      puts "Not an option try again" #loop to top
     end
   end
 
   def self.get_stats
+    #add a question that limits the method options by category
+    select_info = nil
+    puts "What do you want know"
+    until select_info == 100
+      puts "Select a number below: 1 2 3 4 ... 16 or 100 to stop "
+      select_info = gets.chomp.to_i
+      case select_info
+        when 1
+          puts Workout.longest
+        when 2
+          puts Workout.highest_rated
+        when 3
+          puts Workout.most_cals_burned
+        when 5
+          puts @current_user.find_pool_workouts #instance method
+        when 6
+          puts @current_user.find_lifting_workouts #instance method
+        when 7
+          puts @current_user.find_last_workout #instance method
+        when 8
+          puts @current_user.favorite_playlist #instance method
+        when 9
+          puts Playlist.most_played
+        when 10
+          puts Playlist.best_rated
+        when 11
+          puts Playlist.longest_playlist
+        when 12
+          #puts Playlist.genre_count(genre)
+        when 13
+          puts Location.find_clean
+        when 14
+          puts Location.find_dirty
+        when 15
+          puts Location.find_empty
+        when 16
+          puts Location.find_crowded
+        when 100
+          puts "Exiting..."
+        else
+          puts "Not an option try again."
+      end
+    end
   end
 end
