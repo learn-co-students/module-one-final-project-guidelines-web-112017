@@ -8,11 +8,11 @@ class User < ActiveRecord::Base
   end
 
   def find_pool_workouts
-    self.workouts.select{ |w| w.location.name == "pool"} #very specific location needed for this to work
+    self.workouts.select{ |w| w.location.name == "Pool"} #very specific location needed for this to work
   end
 
   def find_lifting_workouts
-    self.workouts.select{ |w| w.location.name == "weights"} #very specific location needed for this to work
+    self.workouts.select{ |w| w.location.name == "Weights"} #very specific location needed for this to work
   end
 
   def find_last_workout
