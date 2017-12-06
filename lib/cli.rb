@@ -40,12 +40,12 @@ class Cli
         time = "Evening"
       end
       puts "Which facility did you use?"
-      puts "Select a number below: \n 1. Pool \n 2. Cardio Room \n 3. Weight Room \n 4. Yoga Studio"
+      puts "Select a number below: \n 1. Pool \n 2. Cardio Room \n 3. Weight Room \n 4. Yoga Studio \n 5. Basketball Court \n 6. Rock Climbing Wall"
       loc_select = gets.chomp.to_i
       #when entering locations into table use this order so the selected number matches their id
       #add name column to workouts = Username timeofday location
       puts "Which playlist did you listen to?"
-      puts "Select a number below: \n 1. Pump Up Jams \n 2. Smooth Jazz \n 3. Classic Rock \n 4. Hip-Hop"
+      puts "Select a number below: \n 1. Pump Up \n 2. Workout Rap \n 3. Beast Mode \n 4. Rock Me Up \n 5. HIIT Pop \n 6. Electro Workout"
       play_select = gets.chomp.to_i
       puts "How many calories did you burn?"
       calories = gets.chomp.to_i
