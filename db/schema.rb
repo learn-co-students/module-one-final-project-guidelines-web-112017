@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 5) do
   create_table "squads", force: :cascade do |t|
     t.integer "game_id"
     t.integer "player_id"
+    t.integer "points"
   end
 
 end

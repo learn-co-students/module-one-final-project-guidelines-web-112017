@@ -1,3 +1,11 @@
 require_relative '../config/environment'
 
-game_start
+ActiveRecord::Base.logger = nil
+
+
+
+
+GameRunner.new
+# what is game start
+# where does it come from
+# obvi must be environment but still WHERE!?!?!
