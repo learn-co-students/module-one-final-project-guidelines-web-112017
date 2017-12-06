@@ -1,11 +1,10 @@
 require 'csv'
 require_relative '../lib/scraper.rb'
 
-
 #marvin /Users/marvinclerge/Development/Projects/module-one-final-project-guidelines-web-112017/db/ww2.csv'
 #matt /Users/mattfaircloth/Development/module-projects/module-one-final-project-guidelines-web-112017/db/ww2.csv
 
-doc = CSV.read('/Users/marvinclerge/Development/Projects/module-one-final-project-guidelines-web-112017/db/ww2.csv')
+doc = CSV.read('/Users/mattfaircloth/Development/module-projects/module-one-final-project-guidelines-web-112017/db/ww2.csv')
 #0 weapon, 1 tyoe, 2 country
 
 Weapon.all.each { |x| x.destroy }
@@ -25,12 +24,14 @@ doc[1..-1].each do |x|
   )
 end
 
-data.each do |hash|
+display_data.each do |hash|
   Weapon.all.each do |weapon|
-    if weapon.name == hash[:text]
+    #binding.pry
+    if weapon.name == hash[:name]
       weapon.caliber = hash[:caliber]
       weapon.weight = hash[:weight]
       weapon.range = hash[:range]
+      weapon.save
     end
   end
 end

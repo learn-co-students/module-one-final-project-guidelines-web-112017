@@ -3,8 +3,9 @@ require_relative '../config/environment'
 require 'nokogiri'
 require 'open-uri'
 
-doc2 = Nokogiri::HTML(open("https://ww2db.com/weapon.php?list=a"))
 
+def display_data
+doc2 = Nokogiri::HTML(open("https://ww2db.com/weapon.php?list=a"))
 data = doc2.css('tr').css('td').css('a').map do |x|
   {name: x.text, link: x.values[0]}
 end[6..-1]
@@ -29,6 +30,9 @@ data.each do |hash| #{:key => value}
     end
   end
 end
+data
+end
+
 
 # html = open("https://ww2db.com/weapon.php?list=a")
 #
