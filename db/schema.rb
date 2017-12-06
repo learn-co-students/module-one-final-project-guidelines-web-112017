@@ -28,6 +28,9 @@ ActiveRecord::Schema.define(version: 4) do
   create_table "weapons", force: :cascade do |t|
     t.string "name"
     t.integer "type_id"
+    t.string "caliber"
+    t.string "weight"
+    t.string "range"
   end
 
 end
