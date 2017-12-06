@@ -7,16 +7,15 @@ class Challenge
     @player1 = player1
     @player2 = player2
     @challenges = [
-      {name: "Sell Girl Scout Cookies", stat: "charisma"},
-      {name: "Eat McDonalds Sandwiches", stat: "fortitude"},
-      {name: "Win a Drag Race", stat: "speed"},
-      {name: "Settle a Disagreement", stat: "diplomacy"},
-      {name: "Housesit for You", stat: "caring"},
-      {name: "Win a Boxing Match", stat: "strength"},
-      {name: "Paint Your Portait", stat: "creativity"}
+      {name: "Sell Girl Scout Cookies", stat: ["charisma"]},
+      {name: "Eat McDonalds Sandwiches", stat: ["fortitude"]},
+      {name: "Win a Drag Race", stat: ["speed"]},
+      {name: "Settle a Disagreement", stat: ["empathy", "charisma"]},
+      {name: "Housesit for You", stat: ["empathy"]},
+      {name: "Win a Boxing Match", stat: ["strength"]},
+      {name: "Paint Your Portait", stat: ["creativity"]}
     ]
 
-      #{}"Give A Speech", "Sell Girl Scout Cookies", "Make Lemonade", "Settle An Argument", "Win A Fist Fight", "Win A Hot Dog Eating Contest", "Win A Footrace", "Fix The Economy", "Win A Round Of Golf"]
     @picked_prezzies = []
     @player1_points = 0
     @player2_points = 0
@@ -74,9 +73,13 @@ class Challenge
   end
 
   def find_winner(prez1, prez2, stat)
-    if prez1.send(stat) < prez2.send(stat)
+    one_stat = 0
+    two_stat = 0
+    stat.each {|s| one_stat += prez1.send(s)}
+    stat.each {|s| two_stat += prez2.send(s)}
+    if one_stat < two_stat
       prez1
-    elsif prez1.send(stat) > prez2.send(stat)
+    elsif one_stat > two_stat
       prez2
     else
       prez1
