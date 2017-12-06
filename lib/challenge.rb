@@ -73,8 +73,8 @@ class Challenge
   end
 
   def fight_helper(stat)
-    prez1 = pick_prez(player1)
-    prez2 = pick_prez(player2)
+    prez1 = pick_prez(player1, squad1)
+    prez2 = pick_prez(player2, squad2)
     winner = find_winner(prez1, prez2, stat)
     delete_prez(player1, prez1)
     delete_prez(player2, prez2)
@@ -104,10 +104,10 @@ class Challenge
     end
   end
 
-  def pick_prez(player)
+  def pick_prez(player, squad)
     puts "#{player.name}, choose a president!"
-    player.squads.last.picks.each {|pick| puts pick.president.name}
-    prez = player.squads.last.picks.find {|pick| pick.president.name == gets.chomp}
+    squad.picks.each {|pick| puts pick.president.name}
+    prez = squad.picks.find {|pick| pick.president.name == gets.chomp}
     if prez
       prez.president
     else
