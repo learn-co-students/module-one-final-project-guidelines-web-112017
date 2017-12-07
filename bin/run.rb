@@ -1,6 +1,8 @@
 require_relative '../config/environment'
 require_relative '../lib/cli'
 
+ActiveRecord::Base.logger = nil
+
 Cli.greeting
 Cli.user_login #find or create user_id aka gym id & name
 Cli.workout_logger #prompt to create a workout

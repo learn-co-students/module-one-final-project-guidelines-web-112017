@@ -20,9 +20,17 @@ class Cli
     else
       puts "Enter your name ex. Ali"
       login_name = gets.chomp
-      puts "Enter your fitness level on a scale 1-10"
-      fitness_level = gets.chomp.to_i
-      @current_user = User.create(name: login_name, fitness: fitness_level)
+      fitness_level = nil
+      until [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].include?(fitness_level)
+        puts "Enter your fitness level on a scale 1-10"
+        fitness_level = gets.chomp.to_i
+        if ![0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].include?(fitness_level)
+          puts "Please enter a number between 0 and 10"
+        end
+      end
+      puts "Enter your age"
+      age = gets.chomp.to_i
+      @current_user = User.create(name: login_name, fitness: fitness_level, age: age)
       puts "Your gym member number is #{@current_user.id}"
     end
     puts "Hello #{@current_user.name}"
@@ -246,19 +254,59 @@ class Cli
     puts "Welcome to your logged workouts!"
     select_info = nil
     puts "Select an option from the menu:"
-    until select_info == 100
-      puts "Select a number below: 1 2 3 4 ... 16 or 100 to go back to main menu "
+    until select_info == 9
+      puts "Select a number below:"
+      puts "
+        1. list your workouts by name \n
+        2. find your workouts by facility \n
+        3. find your workouts by time of day \n
+        4. find your workout that burned most calories \n
+        5. find your highest rated workout \n
+        6. find your longest workout \n
+        7. find your most played playlist \n
+        8. find your highest rated playlist \n
+        9. Exit to main menu...
+      "
       select_info = gets.chomp.to_i
       case select_info
-      when 1
-        puts @current_user.find_pool_workouts
-      when 2
-        puts @current_user.find_lifting_workouts
+      when 2 #if no workouts exist at location puts that message
+        puts "Which facility do you want to select?"
+        loc_select = nil
+        until [1, 2, 3, 4, 5, 6].include?(loc_select)
+          puts "Enter the correct number: \n 1. Pool \n 2. Cardio Room \n 3. Weight Room \n 4. Yoga Studio \n 5. Basketball Court \n 6. Rock Climbing Wall"
+          loc_select = gets.chomp.to_i
+          if ![1, 2, 3, 4, 5, 6].include?(loc_select)
+            puts "Invalid selection. Try again"
+          end
+        end
+        @current_user.find_workouts_by_facility(loc_select)
       when 3
-        puts@current_user.find_last_workout
+        time_select = nil
+        until time_select == 1 || time_select == 2
+          puts "Select 1 for morning or 2 for evening"
+          time_select = gets.chomp.to_i
+          if time_select == 1
+            time = "Morning"
+          elsif time_select == 2
+            time = "Evening"
+          else
+            puts "Invalid selection. Try again"
+          end
+        end
+        @current_user.find_workouts_by_time_of_day(time)
+      when 7
+        @current_user.most_played_playlist
+      when 8
+        @current_user.highest_rated_playlist
+      when 1
+        @current_user.list_workouts_by_name
       when 4
-        puts @current_user.favorite_playlist
-      when 100
+        @current_user.max_cals_burned
+      when 5
+        @current_user.highest_rated_workout
+      when 6
+        @current_user.longest_workout
+      when 9
         puts "Exiting back to menu..."
       else
         puts "Invalid selection. Try again."
@@ -267,52 +315,60 @@ class Cli
   end
 
 
-  # def self.gym_faq
-  #
-  # end
-
-  # # def self.get_stats
-  # #   select_info = nil
-  # #   puts "What do you want know"
-  # #   until select_info == 100
-  # #     puts "Select a number below: 1 2 3 4 ... 16 or 100 to stop "
-  # #     select_info = gets.chomp.to_i
-  # #     case select_info
-  # #       when 1
-  # #         puts Workout.longest
-  # #       when 2
-  # #         puts Workout.highest_rated
-  # #       when 3
-  # #         puts Workout.most_cals_burned
-  # #       when 5
-  # #         puts @current_user.find_pool_workouts #instance method
-  # #       when 6
-  # #         puts @current_user.find_lifting_workouts #instance method
-  # #       when 7
-  # #         puts @current_user.find_last_workout #instance method
-  # #       when 8
-  # #         puts @current_user.favorite_playlist #instance method
-  # #       when 9
-  # #         puts Playlist.most_played
-  # #       when 10
-  # #         puts Playlist.best_rated
-  # #       when 11
-  # #         puts Playlist.longest_playlist
-  # #       when 12
-  # #         #puts Playlist.genre_count(genre)
-  # #       when 13
-  # #         puts Location.find_clean
-  # #       when 14
-  # #         puts Location.find_dirty
-  # #       when 15
-  # #         puts Location.find_empty
-  # #       when 16
-  # #         puts Location.find_crowded
-  # #       when 100
-  # #         puts "Exiting..."
-  # #       else
-  # #         puts "Not an option try again."
-  # #     end
-  #   end
-  # end
+  def self.gym_faq
+    puts "Welcome to FAQ!"
+    select_info = nil
+    puts "Select an option from the menu:"
+    until select_info == 14
+      puts "Select a number below:"
+      puts "
+      1. list all facilities \n
+      2. list empty facilities \n
+      3. list crowded facilities \n
+      4. list dirty facilities \n
+      5. list clean facilities \n
+      6. find average workout length \n
+      7. find average calories burned during a workout \n
+      8. find average workout rating \n
+      9. find average gym member age \n
+      10. list all playlists \n
+      11. find highest rated playlist \n
+      12. find most popular playlist \n
+      13. find longest playlist \n
+      "
+      select_info = gets.chomp.to_i
+      case select_info
+      when 6
+        Workout.avg_workout_length
+      when 8
+        Workout.avg_workout_rating
+      when 7
+        Workout.avg_calories_burned
+      when 9
+        User.avg_age
+      when 11
+        Playlist.best_rated
+      when 13
+        Playlist.longest_playlist
+      when 12
+        Playlist.most_popular
+      when 10
+        Playlist.list_playlists
+      when 5
+        Location.find_clean
+      when 4
+        Location.find_dirty
+      when 2
+        Location.find_empty
+      when 3
+        Location.find_crowded
+      when 1
+        Location.list_all_facilities
+      when 14
+        puts "Exiting back to menu..."
+      else
+        puts "Invalid selection. Try again."
+      end
+    end
+  end
 end

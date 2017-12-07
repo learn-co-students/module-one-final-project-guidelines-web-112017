@@ -3,17 +3,19 @@ class Workout < ActiveRecord::Base
   belongs_to :location
   belongs_to :playlist
 
-  def self.longest
-    self.find_by(duration_mins: (self.maximum("duration_mins"))).description
+  def self.avg_workout_length
+    avg = self.average(:duration_mins)
+    puts "The average workout length at our gym is #{avg.to_i} mins"
   end
 
-  def self.highest_rated
-    self.find_by(rating: (self.maximum("rating"))).description
+  def self.avg_workout_rating
+    avg = self.average(:rating)
+    puts "The average workout rating between 1 and 10 at our gym is #{avg.to_i}"
   end
 
-  def self.most_cals_burned
-    self.find_by(calories_burned: (self.maximum("calories_burned"))).description
+  def self.avg_calories_burned
+    avg = self.average(:calories_burned)
+    puts "The average number of calories burned during a workout at our gym is #{avg.to_i}"
   end
-
 
 end
