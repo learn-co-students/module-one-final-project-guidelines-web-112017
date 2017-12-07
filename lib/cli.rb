@@ -44,8 +44,8 @@ class Cli
 
   def self.workout_logger
     selection = nil
-    until selection == 5
-      puts "MAIN MENU \n 1. Log a new workout \n 2. Browse your workout history \n 3. Edit previously logged workouts \n 4. Gym FAQ \n 5. Exit program"
+    until selection == 6
+      puts "MAIN MENU \n 1. Log a new workout \n 2. Browse your workout history \n 3. Edit previously logged workouts \n 4. Delete a previoiusly logged workout \n 5. Gym FAQ \n 6. Exit program"
       selection = gets.chomp.to_i
 
       case selection
@@ -56,8 +56,10 @@ class Cli
       when 3
         edit_workout
       when 4
-        gym_faq
+        delete_workout
       when 5
+        gym_faq
+      when 6
         puts "Exiting... BYE!"
       else
         puts "Invalid selection. Try again."
@@ -329,6 +331,33 @@ class Cli
         puts "Invalid selection. Try again."
       end
     end
+  end
+
+  def self.delete_workout
+    puts "Here is a list of your logged workouts"
+    puts "Select the workout ID of the workout you'd like to delete"
+    workout_hash = {}
+    @current_user.workouts.each do |w|
+      puts "Workout ID: #{w.id} \n Workout Name: #{w.name}"
+      workout_hash[w.id]=w.name
+    end
+
+    wo_id = nil
+    until workout_hash.keys.include?(wo_id)
+      wo_id = gets.chomp.to_i
+      if !workout_hash.keys.include?(wo_id)
+        puts "Invalid input. Select the workout ID of the workout you'd like to edit"
+        @current_user.workouts.each do |w|
+          puts "Workout ID: #{w.id} #{w.name}"
+        end
+      end
+    end
+
+    delete_this = @current_user.workouts.find { |wo| wo.id == wo_id }
+    delete_this.destroy
+    @current_user.reload
+
+    puts "Workout deleted... exiting to main menu"
   end
 
 
