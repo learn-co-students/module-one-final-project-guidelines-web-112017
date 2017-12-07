@@ -14,8 +14,8 @@ class Challenge
   end
 
   def start_challenge
-    pick_squads
-    1.times do
+    squad_style
+    3.times do
       give_challenge
     end
     if self.squad1.points > self.squad2.points
@@ -25,8 +25,38 @@ class Challenge
     end
   end
 
+  def squad_style
+    puts "Your challenge will begin shortly. Choose Squad / Random Squad"
+    input = gets.chomp.downcase
+    case input
+    when "choose squad"
+      pick_squads
+    when "random squad"
+      random_squad
+    else
+      puts "Invalid input. Please enter: 'choose squad' or 'random squad'"
+      squad_style
+    end
+  end
+
+  def random_squad
+
+
+    pick1 = squad_pick(player1)
+    self.squad1.picks << Pick.create(president: pick1)
+
+    pick2 = squad_pick(player2)
+    self.squad2.picks << Pick.create(president: pick2)
+
+
+
+
+
+
+  end
+
   def pick_squads
-    1.times do
+    3.times do
       display_available
       pick1 = squad_pick(player1)
       self.squad1.picks << Pick.create(president: pick1)
@@ -45,10 +75,14 @@ class Challenge
   end
 
   def squad_pick(player)
-    puts "#{player.name}: choose a president for your squad:"
+    puts "#{player.name}: choose a president for your squad by name or number:"
     input = gets.chomp
     # prez = President.find_by(name: gets.chomp)
-    prez = President.find(input)
+    if input.to_i > 0
+      prez = President.find(input)
+    else
+      prez = President.find_by(name: input)
+    end
     if prez
       picked_prezzies << prez
       prez
@@ -78,8 +112,8 @@ class Challenge
     prez1 = pick_prez(player1, squad1)
     prez2 = pick_prez(player2, squad2)
     winner = find_winner(prez1, prez2, stat)
-    delete_prez(player1, prez1)
-    delete_prez(player2, prez2)
+    delete_prez(squad1, prez1)
+    delete_prez(squad2, prez2)
     win_player = player1 if winner == prez1
     win_player = player2 if winner == prez2
     puts "One point to #{win_player.name}"
@@ -87,8 +121,8 @@ class Challenge
     win_player
   end
 
-  def delete_prez(player, prez)
-    pick_arr = player.squads.last.picks
+  def delete_prez(squad, prez)
+    pick_arr = squad.picks
     pick_arr.delete(pick_arr.where(president: prez))
   end
 
@@ -107,14 +141,21 @@ class Challenge
   end
 
   def pick_prez(player, squad)
-    puts "#{player.name}, choose a president!"
-    squad.picks.each {|pick| puts pick.president.name}
-    prez = squad.picks.find {|pick| pick.president.name == gets.chomp}
+    puts "#{player.name}, choose a president by name or number!"
+    squad.picks.each_with_index {|pick, index| puts "#{index + 1}. #{pick.president.name}" }
+    input = gets.chomp
+    if input.to_i > 0
+      prez = squad.picks[input.to_i - 1]
+    else
+      if found_pres = President.find_by(name: input)
+      prez = squad.picks.find_by(president_id: found_pres.id)
+      end
+    end
     if prez
       prez.president
     else
       puts "Invalid input."
-      pick_prez(player)
+      pick_prez(player, squad)
     end
   end
 
