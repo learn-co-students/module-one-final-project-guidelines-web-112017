@@ -1,177 +1,373 @@
 require 'pry'
 
+#refactor everything in this file?
 class Cli
   @current_user = nil
   def self.greeting
     puts "Welcome to your workout log!"
   end
 
-  def self.user_login #loop until it gets 1 or 2 as a selection,
+  def self.user_login
     puts "Press 1 to sign in or 2 to sign up for an account"
     selection = gets.chomp.to_i
     if selection == 1
       puts "Welcome back! Enter your name ex. Ali"
       login_name = gets.chomp
-      puts "Enter your id number to verify your identity"
+      puts "Enter your gym member number to verify your identity"
       login_id = gets.chomp.to_i
       @current_user = User.find_by(name: login_name, id: login_id)
       #if current user is nil they need to try typing in their info again or chose to create a new account
     else
       puts "Enter your name ex. Ali"
       login_name = gets.chomp
-      @current_user = User.create(name: login_name)
-      puts "Your id number is #{@current_user.id}"
+      fitness_level = nil
+      until [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].include?(fitness_level)
+        puts "Enter your fitness level on a scale 1-10"
+        fitness_level = gets.chomp.to_i
+        if ![0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].include?(fitness_level)
+          puts "Please enter a number between 0 and 10"
+        end
+      end
+      puts "Enter your age"
+      age = gets.chomp.to_i
+      @current_user = User.create(name: login_name, fitness: fitness_level, age: age)
+      puts "Your gym member number is #{@current_user.id}"
     end
     puts "Hello #{@current_user.name}"
-    #get fitness level
+
   end
 
-  def self.get_workout_info
-    puts "Let's log your workout"
-    puts "Press 1 to log a new workout or 2 to edit an existing workout or 3 to see your stats"
-    selection = gets.chomp.to_i
-    if selection == 1
-      puts "What time did you workout?"
+  def self.workout_logger
+    selection = nil
+    until selection == 5
+      puts "MAIN MENU \n 1. Log a new workout \n 2. Browse your workout history \n 3. Edit previously logged workouts \n 4. Gym FAQ \n 5. Exit program"
+      selection = gets.chomp.to_i
+
+      case selection
+      when 1
+        log_new_workout
+      when 2
+        browse_workout_history
+      when 3
+        edit_workout
+      when 4
+        gym_faq
+      when 5
+        puts "Exiting... BYE!"
+      else
+        puts "Invalid selection. Try again."
+      end
+    end
+  end
+
+  def self.log_new_workout
+    puts "Great! Let's log a new workout..."
+    puts "When did you workout?"
+    time_select = nil
+    until time_select == 1 || time_select == 2
       puts "Select 1 for morning or 2 for evening"
       time_select = gets.chomp.to_i
       if time_select == 1
         time = "Morning"
-      else
+      elsif time_select == 2
         time = "Evening"
+      else
+        puts "Invalid selection. Try again"
       end
-      puts "Which facility did you use?"
-      puts "Select a number below: \n 1. Pool \n 2. Cardio Room \n 3. Weight Room \n 4. Yoga Studio \n 5. Basketball Court \n 6. Rock Climbing Wall"
+    end
+    puts "Which facility did you use?"
+    loc_select = nil
+    until [1, 2, 3, 4, 5, 6].include?(loc_select)
+      puts "Enter the correct number: \n 1. Pool \n 2. Cardio Room \n 3. Weight Room \n 4. Yoga Studio \n 5. Basketball Court \n 6. Rock Climbing Wall"
       loc_select = gets.chomp.to_i
-      #when entering locations into table use this order so the selected number matches their id
-      #add name column to workouts = Username timeofday location
-      puts "Which playlist did you listen to?"
-      puts "Select a number below: \n 1. Pump Up \n 2. Workout Rap \n 3. Beast Mode \n 4. Rock Me Up \n 5. HIIT Pop \n 6. Electro Workout"
+      if ![1, 2, 3, 4, 5, 6].include?(loc_select)
+        puts "Invalid selection. Try again"
+      end
+    end
+    name = "#{@current_user.name}, #{time}, #{Location.find(loc_select).name}"
+    puts "Which playlist did you listen to?"
+    play_select = nil
+    until [1, 2, 3, 4, 5, 6].include?(play_select)
+      puts "Enter the correct number: \n 1. Pump Up \n 2. Workout Rap \n 3. Beast Mode \n 4. Rock Me Up \n 5. HIIT Pop \n 6. Electro Workout"
       play_select = gets.chomp.to_i
-      puts "How many calories did you burn?"
+      if ![1, 2, 3, 4, 5, 6].include?(play_select)
+        puts "Invalid selection. Try again"
+      end
+    end
+    puts "How many calories did you burn?"
+    calories = 0
+    until calories > 0
       calories = gets.chomp.to_i
-      puts "How would you rate your workout on a scale of 1 to 10"
+      if calories < 1
+        puts "Please enter a number greater than 0"
+      end
+    end
+    rating = nil
+    until [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].include?(rating)
+      puts "How would you rate your workout on a scale of 0 to 10"
       rating = gets.chomp.to_i
-      puts "How many minutes did you spend in your workout?"
+      if ![0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].include?(rating)
+        puts "Please enter a number between 0 and 10"
+      end
+    end
+    puts "How many minutes did you spend working out?"
+    duration = 0
+    until duration > 0
       duration = gets.chomp.to_i
+      if duration < 1
+        puts "Please enter a number greater than 0"
+      end
+    end
+    puts "You can add any notes about your workout here:"
+    notes = gets.chomp
+
+    @new_workout = Workout.create(
+      name: name,
+      time: time,
+      user: @current_user,
+      location: Location.find(loc_select),
+      calories_burned: calories,
+      duration_mins: duration,
+      rating: rating,
+      notes: notes,
+      playlist: Playlist.find(play_select)
+    )
+  end
+
+  def self.edit_workout #make option to delete workout
+    puts "Here is a list of your logged workouts"
+    puts "Select the workout ID of the workout you'd like to edit"
+    workout_hash = {}
+    @current_user.workouts.each do |w|
+      puts "Workout ID: #{w.id} #{w.name}"
+      workout_hash[w.id]=w.name
+    end
+
+    wo_id = nil
+    until workout_hash.keys.include?(wo_id)
+      wo_id = gets.chomp.to_i
+      if !workout_hash.keys.include?(wo_id)
+        puts "Invalid input. Select the workout ID of the workout you'd like to edit"
+        @current_user.workouts.each do |w|
+          puts "Workout ID: #{w.id} #{w.name}"
+        end
+      end
+    end
+
+    puts "Which workout detail do you want to edit?"
+    puts "Select a number below: \n 1. Time of day \n 2. Facility \n 3. Calories Burned \n 4. Duration \n 5. Rating \n 6. Notes \n 7. Playlist"
+
+    item_edit = nil
+    until [1, 2, 3, 4, 5, 6, 7].include?(item_edit)
+      item_edit = gets.chomp.to_i
+      if ![1, 2, 3, 4, 5, 6, 7].include?(item_edit)
+        puts "Invalid selection. Try again."
+        puts "Select a number below: \n 1. Time of day \n 2. Facility \n 3. Calories Burned \n 4. Duration \n 5. Rating \n 6. Notes \n 7. Playlist"
+      end
+    end
+    loc_select = Workout.find(wo_id).location.id
+    play_select = Workout.find(wo_id).playlist.id
+
+    case item_edit
+    when 1
+      time_select = nil
+      until time_select == 1 || time_select == 2
+        puts "Select 1 for morning or 2 for evening"
+        time_select = gets.chomp.to_i
+        if time_select == 1
+          time = "Morning"
+        elsif time_select == 2
+          time = "Evening"
+        else
+          puts "Invalid selection. Try again"
+        end
+      end
+    when 2
+      puts "Which facility did you use?"
+      loc_select = nil
+      until [1, 2, 3, 4, 5, 6].include?(loc_select)
+        puts "Enter the correct number: \n 1. Pool \n 2. Cardio Room \n 3. Weight Room \n 4. Yoga Studio \n 5. Basketball Court \n 6. Rock Climbing Wall"
+        loc_select = gets.chomp.to_i
+        if ![1, 2, 3, 4, 5, 6].include?(loc_select)
+          puts "Invalid selection. Try again"
+        end
+      end
+    when 3
+      puts "How many calories did you burn?"
+      calories = 0
+      until calories > 0
+        calories = gets.chomp.to_i
+        if calories < 1
+          puts "Please enter a number greater than 0"
+        end
+      end
+    when 4
+      puts "How many minutes did you spend working out?"
+      duration = 0
+      until duration > 0
+        duration = gets.chomp.to_i
+        if duration < 1
+          puts "Please enter a number greater than 0"
+        end
+      end
+    when 5
+      rating = nil
+      until [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].include?(rating)
+        puts "How would you rate your workout on a scale of 0 to 10"
+        rating = gets.chomp.to_i
+        if ![0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].include?(rating)
+          puts "Please enter a number between 0 and 10"
+        end
+      end
+    when 6
       puts "You can add any notes about your workout here:"
       notes = gets.chomp
-
-      @new_workout = Workout.create(
-        time: Time.new,
-        user: @current_user,
-        location: Location.find(loc_select),
-        calories_burned: calories,
-        duration_mins: duration,
-        rating: rating,
-        description: notes,
-        playlist: Playlist.find(play_select)
-      )
-
-    elsif selection == 2
-      #update which thing
-      puts "Which workout do you want to edit?"
-      @current_user.workouts.each do |w|
-        puts "#{w.id} #{w.description}" #need to make name later
+    when 7
+      puts "Which playlist did you listen to?"
+      play_select = nil
+      until [1, 2, 3, 4, 5, 6].include?(play_select)
+        puts "Enter the correct number: \n 1. Pump Up \n 2. Workout Rap \n 3. Beast Mode \n 4. Rock Me Up \n 5. HIIT Pop \n 6. Electro Workout"
+        play_select = gets.chomp.to_i
+        if ![1, 2, 3, 4, 5, 6].include?(play_select)
+          puts "Invalid selection. Try again"
+        end
       end
-      wo_id = gets.chomp.to_i
-      #make sure wo_id is one of the options above
-      puts "Which workout detail do you want to edit?"
-      puts "Select a number below: \n 1. Time of day \n 2. Facility \n 3. Calories Burned \n 4. Duration \n 5. Rating \n 6. Notes \n 7. Playlist"
-      item_edit = gets.chomp.to_i
-      loc_select = Workout.find(wo_id).location.id
-      play_select = Workout.find(wo_id).playlist.id
+    end
 
-      case item_edit
-        when 1
+    select_hash = {
+      1 => {time: time},
+      2 => {location: Location.find(loc_select)},
+      3 => {calories_burned: calories},
+      4 => {duration_mins: duration},
+      5 => {rating: rating},
+      6 => {notes: notes},
+      7 => {playlist: Playlist.find(play_select)}
+    }
+
+    Workout.find(wo_id).update(select_hash[item_edit])
+    name = "#{@current_user.name}, #{time}, #{Location.find(loc_select).name}"
+    Workout.find(wo_id).update(name: name)
+
+  end
+
+  def self.browse_workout_history
+    puts "Welcome to your logged workouts!"
+    select_info = nil
+    puts "Select an option from the menu:"
+    until select_info == 9
+      puts "Select a number below:"
+      puts "
+        1. list your workouts by name \n
+        2. find your workouts by facility \n
+        3. find your workouts by time of day \n
+        4. find your workout that burned most calories \n
+        5. find your highest rated workout \n
+        6. find your longest workout \n
+        7. find your most played playlist \n
+        8. find your highest rated playlist \n
+        9. Exit to main menu...
+      "
+      select_info = gets.chomp.to_i
+      case select_info
+      when 2 #if no workouts exist at location puts that message
+        puts "Which facility do you want to select?"
+        loc_select = nil
+        until [1, 2, 3, 4, 5, 6].include?(loc_select)
+          puts "Enter the correct number: \n 1. Pool \n 2. Cardio Room \n 3. Weight Room \n 4. Yoga Studio \n 5. Basketball Court \n 6. Rock Climbing Wall"
+          loc_select = gets.chomp.to_i
+          if ![1, 2, 3, 4, 5, 6].include?(loc_select)
+            puts "Invalid selection. Try again"
+          end
+        end
+        @current_user.find_workouts_by_facility(loc_select)
+      when 3
+        time_select = nil
+        until time_select == 1 || time_select == 2
           puts "Select 1 for morning or 2 for evening"
           time_select = gets.chomp.to_i
           if time_select == 1
             time = "Morning"
-          else
+          elsif time_select == 2
             time = "Evening"
+          else
+            puts "Invalid selection. Try again"
           end
-        when 2
-          puts "Which facility did you use?"
-          puts "Select a number below: \n 1. Pool \n 2. Cardio Room \n 3. Weight Room \n 4. Yoga Studio"
-          loc_select = gets.chomp.to_i
-        when 3
-          puts "How many calories did you burn?"
-          calories = gets.chomp.to_i
-        when 4
-          puts "How many minutes did you spend in your workout?"
-          duration = gets.chomp.to_i
-        when 5
-          puts "How would you rate your workout on a scale of 1 to 10"
-          rating = gets.chomp.to_i
-        when 6
-          puts "You can add any notes about your workout here:"
-          notes = gets.chomp
-        when 7
-          puts "Which playlist did you listen to?"
-          puts "Select a number below: \n 1. Pump Up Jams \n 2. Smooth Jazz \n 3. Classic Rock \n 4. Hip-Hop"
-          play_select = gets.chomp.to_i
+        end
+        @current_user.find_workouts_by_time_of_day(time)
+      when 7
+        @current_user.most_played_playlist
+      when 8
+        @current_user.highest_rated_playlist
+      when 1
+        @current_user.list_workouts_by_name
+      when 4
+        @current_user.max_cals_burned
+      when 5
+        @current_user.highest_rated_workout
+      when 6
+        @current_user.longest_workout
+      when 9
+        puts "Exiting back to menu..."
+      else
+        puts "Invalid selection. Try again."
       end
-
-      select_hash = {
-        1 => {time: Time.new}, #going to fix
-        2 => {location: Location.find(loc_select)},
-        3 => {calories_burned: calories},
-        4 => {duration_mins: duration},
-        5 => {rating: rating},
-        6 => {description: notes},
-        7 => {playlist: Playlist.find(play_select)}
-      }
-      Workout.find(wo_id).update(select_hash[item_edit])
-      #if they want to update more than one detail of a workout
-    elsif selection == 3
-      puts "Loading stats menu..."
-    else
-      puts "Not an option try again" #loop to top
     end
   end
 
-  def self.get_stats
-    #add a question that limits the method options by category
+
+  def self.gym_faq
+    puts "Welcome to FAQ!"
     select_info = nil
-    puts "What do you want know"
-    until select_info == 100
-      puts "Select a number below: 1 2 3 4 ... 16 or 100 to stop "
+    puts "Select an option from the menu:"
+    until select_info == 14
+      puts "Select a number below:"
+      puts "
+      1. list all facilities \n
+      2. list empty facilities \n
+      3. list crowded facilities \n
+      4. list dirty facilities \n
+      5. list clean facilities \n
+      6. find average workout length \n
+      7. find average calories burned during a workout \n
+      8. find average workout rating \n
+      9. find average gym member age \n
+      10. list all playlists \n
+      11. find highest rated playlist \n
+      12. find most popular playlist \n
+      13. find longest playlist \n
+      "
       select_info = gets.chomp.to_i
       case select_info
-        when 1
-          puts Workout.longest
-        when 2
-          puts Workout.highest_rated
-        when 3
-          puts Workout.most_cals_burned
-        when 5
-          puts @current_user.find_pool_workouts #instance method
-        when 6
-          puts @current_user.find_lifting_workouts #instance method
-        when 7
-          puts @current_user.find_last_workout #instance method
-        when 8
-          puts @current_user.favorite_playlist #instance method
-        when 9
-          puts Playlist.most_played
-        when 10
-          puts Playlist.best_rated
-        when 11
-          puts Playlist.longest_playlist
-        when 12
-          #puts Playlist.genre_count(genre)
-        when 13
-          puts Location.find_clean
-        when 14
-          puts Location.find_dirty
-        when 15
-          puts Location.find_empty
-        when 16
-          puts Location.find_crowded
-        when 100
-          puts "Exiting..."
-        else
-          puts "Not an option try again."
+      when 6
+        Workout.avg_workout_length
+      when 8
+        Workout.avg_workout_rating
+      when 7
+        Workout.avg_calories_burned
+      when 9
+        User.avg_age
+      when 11
+        Playlist.best_rated
+      when 13
+        Playlist.longest_playlist
+      when 12
+        Playlist.most_popular
+      when 10
+        Playlist.list_playlists
+      when 5
+        Location.find_clean
+      when 4
+        Location.find_dirty
+      when 2
+        Location.find_empty
+      when 3
+        Location.find_crowded
+      when 1
+        Location.list_all_facilities
+      when 14
+        puts "Exiting back to menu..."
+      else
+        puts "Invalid selection. Try again."
       end
     end
   end
