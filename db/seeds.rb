@@ -1,7 +1,7 @@
 require 'csv'
 require_relative '../config/environment'
 
-csv = CSV.read('presidents_with_rankings2.csv', headers: :first_row)
+csv = CSV.read('presidents_with_rankings.csv', headers: :first_row)
 
 
 # t.string :name
