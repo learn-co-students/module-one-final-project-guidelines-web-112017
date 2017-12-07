@@ -36,12 +36,12 @@ To start the application type `ruby bin/run.rb`
 
 ## Contributor's Guide
  Before working with this application, you will need to run `bundle install` which will download the following gems:
-  1. "sinatra-activerecord"
-  2. "sqlite3"
-  3. "pry"
-  4. "require_all"
-  5. "rake"
-  6. "nokogiri"
+  1. sinatra-activerecord
+  2. sqlite3
+  3. pry
+  4. require_all
+  5. rake
+  6. nokogiri
 
   Of these gems, the most important gem was Nokogiri, because it was required to scrape https://ww2db.com/, which is where we retrieved information about the weapons to seed the database. If you wanted to add more characteristics for each weapon, you could modify the following code in 'lib/scraper.rb'.
 
