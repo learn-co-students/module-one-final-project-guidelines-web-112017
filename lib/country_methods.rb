@@ -9,18 +9,18 @@ end
 
 def list_country_commands(country_input)
   puts "\nEnter number of command for #{Country.find(country_input).name}:
-  1.Show all weapons
-  2.Show all types
-  3.Show most popular type
-  4.Show weapon with highest caliber
-  5.Show heaviest weapon
-  6.Show weapon with longest range
+  1. Show all weapons
+  2. Show all types
+  3. Show most popular type of weapon
+  4. Show weapon with highest caliber
+  5. Show heaviest weapon
+  6. Show weapon with longest range
   "
 end
 
 def all_country_weapons(country_input)
+  star_divider
   Country.find(country_input).weapons.each do |weapon|
-    star_divider
     puts weapon.name
   end
 

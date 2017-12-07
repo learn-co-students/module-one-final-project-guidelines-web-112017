@@ -1,4 +1,5 @@
 def list_weapons
+  print "\n"
   Weapon.all.each do |weapon|
     puts "#{weapon.id}. #{weapon.name}"
   end
@@ -8,18 +9,18 @@ end
 
 def list_weapon_commands(weapon_input)
   puts "\nEnter number of command for #{Weapon.find(weapon_input).name}:
-  1.Show all countries
-  2.Show type of weapon
-  3.Show characteristics of #{Weapon.find(weapon_input).name}
+  1. Show country
+  2. Show type of weapon
+  3. Show characteristics of #{Weapon.find(weapon_input).name}
   "
 end
 
 def all_weapon_countries(weapon_input)
-  Weapon.find(weapon_input).countries.each do |country|
+   a = Weapon.find(weapon_input).countries.map do |country|
+    country.name
+  end.uniq.compact
     star_divider
-    puts country.name
-  end
-
+    a.each {|x| puts x}
   nil
 end
 

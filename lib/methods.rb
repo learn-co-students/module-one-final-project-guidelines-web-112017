@@ -2,12 +2,12 @@ require_relative '../config/environment'
 
 def welcome
   star_divider
-  puts "\nWelcome to World War II Weapons Finder"
-  puts "What would you like to search by:
-  1.Countries
-  2.Weapons
-  3.Types
-  4.Exit the Program
+  puts "\nWelcome to World War II Weapons Finder!!!"
+  puts "\nWhat would you like to search by:
+  1. Countries
+  2. Weapons
+  3. Types
+  4. Exit the Program
   "
   puts "Please select an option."
 end
@@ -61,7 +61,7 @@ def run
         type_command_input = get_input(6)
         determine_type_command(type_input, type_command_input)
       when 4
-        abort("Thank you for learning about WWII Weapons!")
+        abort("\nThank you for learning about WWII Weapons!")
     end
   end
 end

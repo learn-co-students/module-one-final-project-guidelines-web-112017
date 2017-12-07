@@ -9,8 +9,8 @@ end
 
 def list_type_commands(type_input)
   puts "\nEnter number of command for #{Type.find(type_input).name}:
-  1.Show all weapons for type
-  2.Show all countries
+  1. Show all weapons
+  2. Show all countries
   3. What country has the most of this type?
   4. Which weapon of this type has the lowest caliber?
   5. Which weapon of this type has the lightest weight?
@@ -19,8 +19,8 @@ def list_type_commands(type_input)
 end
 
 def all_type_weapons(type_input)
+  star_divider
   Type.find(type_input).weapons.each do |weapon|
-    star_divider
     puts weapon.name
   end
 
