@@ -165,8 +165,8 @@ def list_types
   nil
 end
 
-def list_type_commands
-  puts "Enter number of command:
+def list_type_commands(type_input)
+  puts "Enter number of command for #{Type.find(type_input).name}:
   1.Show all weapons
   2.Show all countries
   3.Country with most of that type
@@ -174,6 +174,50 @@ def list_type_commands
   5.Show weapon of this type has lowest range
   6.Show weapon of this type has lowest weight
   "
+end
+
+def all_type_weapons(type_input)
+  Type.find(type_input).weapons.each do |weapon|
+    puts weapon.name
+  end
+
+  nil
+end
+
+def all_type_countries(type_input)
+  Type.find(type_input).weapons.each do |weapon|
+    puts weapon.countries[0].name
+  end
+
+  nil
+end
+
+def type_3(type_input)
+  a=Type.find(type_input).weapons.map do |weapon|
+    weapon.countries[0]
+  end
+
+  freq = a.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
+  a.max_by { |v| freq[v] }.name
+end
+
+
+def determine_type_command(type_input, type_command_input)
+  case type_command_input
+    when 1
+      all_type_weapons(type_input)
+    when 2
+      all_type_countries(type_input)
+    when 3
+      type_3(type_input)
+    when 4
+
+    when 5
+
+    when 6
+
+    end
+
 end
 #______________GENERAL_______________
 def get_input(max)
