@@ -1,5 +1,12 @@
 require_relative '../config/environment'
 
+def start
+  star_divider
+  puts "*" * 100
+  art
+  puts "*" * 100
+end
+
 def welcome
   star_divider
   puts "\nWelcome to World War II Weapons Finder!!!"
@@ -29,6 +36,7 @@ def get_input(max)
 end
 
 def run
+  start
   loop do
     welcome
     print "Option Number: "
