@@ -3,25 +3,25 @@
 World War II Weapons Finder is a command line application that searches through various weapons used in World War II. This CLI uses associations between Weapons, Countries, and Types of Weapons. Each weapon also potentially has three characteristics. This CLI will ask for User input, and provide information about weapons based off of the input.
 
 ## Using the application
-In this application, a User is able to pick a list of countries, weapons, or category of weapons.If a User selects a list of countries, they can:
+In this application, a User is able to pick a list of countries, weapons, or category of weapons.If a User selects a list of countries, they can find the following information:
 
-- Show all weapons
-- Show all types
+- All weapons
+- All types
 - Show most popular type of weapon
 - Show weapon with highest caliber
 - Show heaviest weapon
 - Show weapon with longest range
 
-If a User selects a list of weapons, they can:
+If a User selects a list of weapons, they can find the following information:
 
 - Show country
 - Show type of weapon
 - Show characteristics of that weapon
 
-If a User selects a list of categories, they can:
+If a User selects a list of categories, they can find the following information:
 
-- Show all weapons
-- Show all countries
+- All weapons
+- All countries
 - What country has the most of this type?
 - Which weapon of this type has the lowest caliber?
 - Which weapon of this type has the lightest weight?
