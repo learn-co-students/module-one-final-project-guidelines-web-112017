@@ -15,7 +15,7 @@ class Challenge
 
   def start_challenge
     squad_style
-    3.times do
+    5.times do
       give_challenge
     end
     if self.squad1.points > self.squad2.points
@@ -26,7 +26,7 @@ class Challenge
   end
 
   def squad_style
-    puts "Your challenge will begin shortly. Choose Squad / Random Squad"
+    puts "\nChoose Squad / Random Squad"
     input = gets.chomp.downcase
     case input
     when "choose squad"
@@ -40,25 +40,19 @@ class Challenge
   end
 
   def random_squad
-
-
-    pick1 = squad_pick(player1)
-    self.squad1.picks << Pick.create(president: pick1)
-
-    pick2 = squad_pick(player2)
-    self.squad2.picks << Pick.create(president: pick2)
-
-    #first grab 3 random presidents from President.all
-    #put them in an array of 3 in Pick.all
-    #put the pick with this array into a Players squad
-
-
-
-
+    arr = President.all.sample(10)
+    arr1 = arr.slice(0..4)
+    arr2 = arr.slice(5..9)
+    arr1.each do |prez|
+      self.squad1.picks << Pick.create(president: prez)
+    end
+    arr2.each do |prez|
+      self.squad2.picks << Pick.create(president: prez)
+    end
   end
 
   def pick_squads
-    3.times do
+    5.times do
       display_available
       pick1 = squad_pick(player1)
       self.squad1.picks << Pick.create(president: pick1)
@@ -69,17 +63,18 @@ class Challenge
   end
 
   def display_available
+    puts "\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\n\n"
     President.all.each do |president|
       if !picked_prezzies.include?(president)
         puts "#{president.id}. #{president.name}: #{president.description}"
       end
     end
+    puts "\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\n\n"
   end
 
   def squad_pick(player)
-    puts "#{player.name}: choose a president for your squad by name or number:"
+    puts "#{player.name.upcase}: choose a president for your squad by name or number:\n"
     input = gets.chomp
-    # prez = President.find_by(name: gets.chomp)
     if input.to_i > 0
       prez = President.find(input)
     else
@@ -95,7 +90,9 @@ class Challenge
   end
 
   def results(winner, loser)
-    puts "Congratulations #{winner.name}! You win!"
+    puts "\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\n"
+    puts "\n         CONGRATULATIONS #{winner.name.upcase}! YOU WIN!\n"
+    puts "\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\n\n"
     self.game.winner_id = winner.id
     self.game.loser_id = loser.id
     game.save
@@ -103,8 +100,8 @@ class Challenge
 
   def give_challenge
     chal = self.challenges.pop
-    puts "Choose a president to represent you for:"
-    puts chal[:name]
+    puts "\nChoose a president to represent you for:"
+    puts "\n#{chal[:name]}".colorize(:red)
     winner = fight_helper(chal[:stat])
     self.squad1.update(points: (squad1.points + 1)) if winner == player1
     self.squad2.update(points: (squad2.points + 1)) if winner == player2
@@ -118,8 +115,8 @@ class Challenge
     delete_prez(squad2, prez2)
     win_player = player1 if winner == prez1
     win_player = player2 if winner == prez2
-    puts "One point to #{win_player.name}"
-    puts winner.fact
+    puts "\nONE POINT to #{win_player.name.upcase}\n\n"
+    puts "Fact about #{winner.name}: #{winner.fact}".colorize(:blue)
     win_player
   end
 
@@ -143,8 +140,8 @@ class Challenge
   end
 
   def pick_prez(player, squad)
-    puts "#{player.name}, choose a president by name or number!"
-    squad.picks.each_with_index {|pick, index| puts "#{index + 1}. #{pick.president.name}" }
+    puts "\n#{player.name.upcase}, choose a president by name or number:\n\n"
+    squad.picks.each_with_index {|pick, index| puts "#{index + 1}. #{pick.president.name} - Best Ranked Skill: #{pick.president.best_stat}" }
     input = gets.chomp
     if input.to_i > 0
       prez = squad.picks[input.to_i - 1]

@@ -1,71 +1,32 @@
 #Presidential Thunderdome Vol 1: Screaming Eagles of Freedom
 
-Thank you for downloading Presidential Thunderdome, Vol 1.: Screaming Eagles of Freedom.
+Thank you for downloading Presidential Thunderdome, Vol 1.: Eagles of Screaming Freedom.
 
-This ReadMe contains useful tips for installing, troubleshooting, and enjoying our game.
+In this game, you and one opponent choose a team of five presidents to battle each other in five earth shattering challenges. At the end of each game, the player with the most wins is declared the victor.
 
-#Getting Started
+This ReadMe contains useful tips for installing and enjoying our game.
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+#Install Instructions
+NOTE: All steps included in parentheses are terminal commands
 
-#Prerequisites
+1. Open your computer's terminal
+2. Clone the repository (git clone [link])
+3. Change directory into this directory (cd [folder name])
+4. Install necessary gems (bundle install)
+5. Run the program (ruby bin/run.rb)
 
-What things you need to install the software and how to install them
 
-      Give examples
-
-#Installing
-
-A step by step series of examples that tell you have to get a development env running
-
-Say what the step will be
-
-      Give the example
-
-And repeat
-
-      until finished
-
-End with an example of getting some data out of the system or using it for a little demo
-
-#Running the tests
-
-Explain how to run the automated tests for this system
-
-#Break down into end to end tests
-
-Explain what these tests test and why
-
-      Give an example
-
-#And coding style tests
-
-Explain what these tests test and why
-
-      Give an example
-
-#Deployment
-
-Add additional notes about how to deploy this on a live system
-
-#Built With
-
-Dropwizard - The web framework used
-Maven - Dependency Management
-ROME - Used to generate RSS Feeds
-
-#Contributing
-
-Please read CONTRIBUTING.md for details on our code of conduct, and the process for submitting pull requests to us.
-
-#Versioning
-
-We use SemVer for versioning. For the versions available, see the tags on this repository.
+#Contributors Guide
+1. Fork the repository
+2. Create your feature branch (git checkout -b my-new-feature)
+3. Commit your changes (git commit -am 'add some feature')
+4. Push to the branch (git push origin my-new-feature)
+5. Create a new pull requests
 
 #Authors
 
-David Brennan
-Kelly Sample
+David Brennan   |   david.brennan@flatironschool.com
+Kelly Sample    |   kelly.sample@flatironschool.com
 
 #License
 
@@ -79,4 +40,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #Acknowledgments
 
-Thank you to our classmates and instructors at the Flatiron School in New York, New York. Also thank you to the ascii artists who worked tirelessly to provide us with flawless presidential portraits. A final thank you to Matz for creating such a lovely language to play with.
+Thank you to our classmates and instructors at the Flatiron School in New York, New York. We'd especially like to thank Truman and Garry for allowing us to pitch our ideas to them. Also thank you to the ascii artists who worked tirelessly to provide us with this flawless presidential portrait. A final thank you to Matz for creating such a lovely language to play with.
