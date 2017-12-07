@@ -48,7 +48,9 @@ class Challenge
     pick2 = squad_pick(player2)
     self.squad2.picks << Pick.create(president: pick2)
 
-
+    #first grab 3 random presidents from President.all
+    #put them in an array of 3 in Pick.all
+    #put the pick with this array into a Players squad
 
 
 
