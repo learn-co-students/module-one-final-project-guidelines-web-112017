@@ -1,6 +1,11 @@
 require_relative '../config/environment'
 
-# ActiveRecord::Base.logger = nil
+ActiveRecord::Base.logger = nil
 
-puts "Welcome to Presidential Thunderdome!"
-game_start
+
+
+
+GameRunner.new
+# what is game start
+# where does it come from
+# obvi must be environment but still WHERE!?!?!

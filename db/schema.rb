@@ -30,12 +30,18 @@ ActiveRecord::Schema.define(version: 5) do
     t.string  "name"
     t.string  "description"
     t.string  "fact"
-    t.integer "rank"
+    t.integer "strength"
+    t.integer "dexterity"
+    t.integer "stamina"
+    t.integer "wisdom"
+    t.integer "intelligence"
+    t.integer "charisma"
   end
 
   create_table "squads", force: :cascade do |t|
     t.integer "game_id"
     t.integer "player_id"
+    t.integer "points"
   end
 
 end
