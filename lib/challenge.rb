@@ -52,14 +52,18 @@ class Challenge
   end
 
   def pick_squads
+    num = 5
     5.times do
-      display_available
-      pick1 = squad_pick(player1)
-      self.squad1.picks << Pick.create(president: pick1)
-      display_available
-      pick2 = squad_pick(player2)
-      self.squad2.picks << Pick.create(president: pick2)
+      make_pick(player1, num, squad1)
+      make_pick(player2, num, squad2)
+      num -= 1
     end
+  end
+
+  def make_pick(player, num, squad)
+    display_available
+    pick = squad_pick(player, num)
+    squad.picks << Pick.create(president: pick)
   end
 
   def display_available
@@ -72,8 +76,9 @@ class Challenge
     puts "\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\n\n"
   end
 
-  def squad_pick(player)
+  def squad_pick(player, num)
     puts "#{player.name.upcase}: choose a president for your squad by name or number:\n"
+    puts "#{num} pick(s) remaining."
     input = gets.chomp
     if input.to_i > 0
       prez = President.find(input)
