@@ -1,13 +1,14 @@
 def list_countries
+  print "\n"
   Country.all.each do |country|
     puts "#{country.id}. #{country.name}"
   end
-  puts "Please pick a country by number."
+  puts "\nPlease pick a country by number."
   nil
 end
 
 def list_country_commands(country_input)
-  puts "Enter number of command for #{Country.find(country_input).name}:
+  puts "\nEnter number of command for #{Country.find(country_input).name}:
   1.Show all weapons
   2.Show all types
   3.Show most popular type
@@ -19,6 +20,7 @@ end
 
 def all_country_weapons(country_input)
   Country.find(country_input).weapons.each do |weapon|
+    star_divider
     puts weapon.name
   end
 
@@ -29,8 +31,8 @@ def all_country_types(country_input)
   a=Country.find(country_input).weapons.map do |weapon|
     weapon.type.name
   end.uniq
+  star_divider
   puts a
-
   nil
 end
 
@@ -40,7 +42,8 @@ def most_popular_type_by_country(country_input)
   end
 
   freq = a.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
-  a.max_by { |v| freq[v] }.name
+  star_divider
+  puts a.max_by { |v| freq[v] }.name
 end
 
 def country_highest_caliber_weapon(country_input)
@@ -52,6 +55,7 @@ def country_highest_caliber_weapon(country_input)
   end
 
   a=hash.sort_by {|_key, value| value}.last
+  star_divider
   puts "#{a[0]} with a caliber of #{a[1]} mm"
   nil
 end
@@ -65,6 +69,7 @@ def country_heaviest_weapon(country_input)
   end
 
   a=hash.sort_by {|_key, value| value}.last
+  star_divider
   puts "#{a[0]} with a weight of #{a[1]} kg"
   nil
 end
@@ -78,6 +83,7 @@ def country_longest_range_weapon(country_input)
   end
 
   a=hash.sort_by {|_key, value| value}.last
+  star_divider
   puts "#{a[0]} with a range of #{a[1]} m"
   nil
 end

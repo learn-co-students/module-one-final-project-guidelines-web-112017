@@ -2,12 +2,12 @@ def list_weapons
   Weapon.all.each do |weapon|
     puts "#{weapon.id}. #{weapon.name}"
   end
-  puts "Please pick a weapon by number."
+  puts "\nPlease pick a weapon by number."
   nil
 end
 
 def list_weapon_commands(weapon_input)
-  puts "Enter number of command for #{Weapon.find(weapon_input).name}:
+  puts "\nEnter number of command for #{Weapon.find(weapon_input).name}:
   1.Show all countries
   2.Show type of weapon
   3.Show characteristics of #{Weapon.find(weapon_input).name}
@@ -16,6 +16,7 @@ end
 
 def all_weapon_countries(weapon_input)
   Weapon.find(weapon_input).countries.each do |country|
+    star_divider
     puts country.name
   end
 
@@ -23,11 +24,13 @@ def all_weapon_countries(weapon_input)
 end
 
 def all_weapon_type(weapon_input)
+  star_divider
   puts Weapon.find(weapon_input).type.name
   nil
 end
 
 def display_characteristics(weapon_input)
+  star_divider
   puts "#{Weapon.find(weapon_input).name}:"
   Weapon.find(weapon_input).range ? (puts "Range is #{Weapon.find(weapon_input).range}") : (puts "Range is unknown")
   Weapon.find(weapon_input).caliber ? (puts "Caliber is #{Weapon.find(weapon_input).caliber}") : (puts "Caliber is unknown")
