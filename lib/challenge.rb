@@ -15,7 +15,7 @@ class Challenge
 
   def start_challenge
     squad_style
-    3.times do
+    5.times do
       give_challenge
     end
     if self.squad1.points > self.squad2.points
@@ -40,9 +40,9 @@ class Challenge
   end
 
   def random_squad
-    arr = President.all.sample(6)
-    arr1 = arr.slice(0..2)
-    arr2 = arr.slice(3..6)
+    arr = President.all.sample(10)
+    arr1 = arr.slice(0..4)
+    arr2 = arr.slice(5..9)
     arr1.each do |prez|
       self.squad1.picks << Pick.create(president: prez)
     end
@@ -52,7 +52,7 @@ class Challenge
   end
 
   def pick_squads
-    3.times do
+    5.times do
       display_available
       pick1 = squad_pick(player1)
       self.squad1.picks << Pick.create(president: pick1)
@@ -141,7 +141,7 @@ class Challenge
 
   def pick_prez(player, squad)
     puts "\n#{player.name.upcase}, choose a president by name or number:\n\n"
-    squad.picks.each_with_index {|pick, index| puts "#{index + 1}. #{pick.president.name}" }
+    squad.picks.each_with_index {|pick, index| puts "#{index + 1}. #{pick.president.name} - Best Ranked Skill: #{pick.president.best_stat}" }
     input = gets.chomp
     if input.to_i > 0
       prez = squad.picks[input.to_i - 1]
