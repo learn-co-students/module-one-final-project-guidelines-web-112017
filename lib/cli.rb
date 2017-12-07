@@ -22,7 +22,7 @@ class Cli
           @current_user = User.find_by(name: login_name, id: login_id)
         end
       else
-        puts "Enter your name ex. Ali"
+        puts "Enter your name"
         login_name = gets.chomp
         fitness_level = nil
         until [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].include?(fitness_level)
