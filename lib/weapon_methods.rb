@@ -2,6 +2,7 @@ def list_weapons
   Weapon.all.each do |weapon|
     puts "#{weapon.id}. #{weapon.name}"
   end
+  puts "Please pick a weapon by number."
   nil
 end
 

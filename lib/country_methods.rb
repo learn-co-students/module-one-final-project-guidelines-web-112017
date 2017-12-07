@@ -2,6 +2,7 @@ def list_countries
   Country.all.each do |country|
     puts "#{country.id}. #{country.name}"
   end
+  puts "Please pick a country by number."
   nil
 end
 
