@@ -1,3 +1,5 @@
+require 'pry'
+
 class User < ActiveRecord::Base
   has_many :workouts
   has_many :playlists, through: :workouts
@@ -7,14 +9,14 @@ class User < ActiveRecord::Base
     fac_names = self.workouts.select{ |w| w.location.id == loc_id }.map do |wo|
       wo.name
     end
-    puts fac_names
+    fac_names
   end
 
   def find_workouts_by_time_of_day(time_of_day)
     tod_workouts = self.workouts.select { |w| w.time == time_of_day }.map do |wo|
       wo.name
     end
-    puts tod_workouts
+     tod_workouts
   end
 
   def most_played_playlist
@@ -22,33 +24,42 @@ class User < ActiveRecord::Base
     self.workouts.map do |w|
       hash[w.playlist] += 1
     end
-    puts hash.max_by{|k,v| v}.first.name
+    name =  hash.max_by{|k,v| v}.first.name
+    play_count = hash.max_by{|k,v| v}[1]
+    puts "YOUR MOST PLAYED PLAYLIST: \n #{name} \n Playcount: #{play_count}"
   end
 
   def highest_rated_playlist
     max_rating = self.playlists.maximum("rating")
-    puts self.playlists.find_by(rating: max_rating).name
+    playlist =  self.playlists.find_by(rating: max_rating).name
+    puts "YOUR HIGHEST RATED PLAYLIST: \n #{playlist} \n Rating: #{max_rating}"
   end
 
   def list_workouts_by_name
-    self.workouts.map { |wo| puts " Name: #{wo.name} \n Rating: #{wo.rating} \n Length: #{wo.duration_mins} mins \n Cals Burned: #{wo.calories_burned} cals \n Playlist: #{wo.playlist.name}"  }
+    self.workouts.map { |wo| puts " Name: #{wo.name} \n Time of Day: #{wo.time} \n Rating: #{wo.rating} \n Length: #{wo.duration_mins} mins \n Cals Burned: #{wo.calories_burned} cals \n Playlist: #{wo.playlist.name} \n Notes: #{wo.notes} \n *************************"  }
   end
 
   def max_cals_burned
-    puts self.workouts.find_by(calories_burned: (self.workouts.maximum("calories_burned"))).name
+    workout = self.workouts.find_by(calories_burned: (self.workouts.maximum("calories_burned"))).name
+    cals_burned = self.workouts.maximum("calories_burned")
+    puts "Workout Name: #{workout} \n Cals burned: #{cals_burned}"
   end
 
   def highest_rated_workout
-    puts self.workouts.find_by(rating: (self.workouts.maximum("rating"))).name
+    workout = self.workouts.find_by(rating: (self.workouts.maximum("rating"))).name
+    rating = self.workouts.maximum("rating")
+    puts "Workout Name: #{workout} \n Rating: #{rating}"
   end
 
   def longest_workout
-    puts self.workouts.find_by(duration_mins: (self.workouts.maximum("duration_mins"))).name
+    workout = self.workouts.find_by(duration_mins: (self.workouts.maximum("duration_mins"))).name
+    minutes = self.workouts.maximum("duration_mins")
+    puts "Workout Name: #{workout} \n Minutes: #{minutes}"
   end
 
   def self.avg_age
     avg = self.average(:age)
-    puts "The average age for our gym members is #{avg}"
+    puts "The average age for our gym members is #{avg.to_i}"
   end
 
 end
