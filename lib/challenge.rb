@@ -16,6 +16,8 @@ class Challenge
       {name: "Paint Your Portait", stat: ["creativity"]}
     ]
 
+    # strength: dexterity: stamina: wisdom: intelligence: charisma:)
+
     @picked_prezzies = []
     @player1_points = 0
     @player2_points = 0
