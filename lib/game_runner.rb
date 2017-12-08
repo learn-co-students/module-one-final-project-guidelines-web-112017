@@ -1,7 +1,7 @@
 class GameRunner
 
   def initialize
-    Ascii.new
+    Drawing.new
     get_input
   end
 
