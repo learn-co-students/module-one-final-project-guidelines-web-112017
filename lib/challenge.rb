@@ -90,7 +90,7 @@ class Challenge
       prez
     else
       puts "Invalid input."
-      squad_pick(player)
+      squad_pick(player, num)
     end
   end
 
