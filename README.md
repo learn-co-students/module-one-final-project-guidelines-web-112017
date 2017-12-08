@@ -13,3 +13,5 @@ Workout Logger is a fitness helper application that lets users log, retrieve, ed
 7. ruby bin/run.rb
 8. Follow CLI instructions
 9. Run the file again if you want to give it another go!
+
+Demo video: https://www.youtube.com/watch?v=eU9_E3CPdY0&feature=youtu.be
