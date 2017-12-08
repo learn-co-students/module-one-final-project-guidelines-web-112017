@@ -1,49 +1,66 @@
-# Module One Final Project Guidelines
+# World War II Weapons Finder
 
-Congratulations, you're at the end of module one! You've worked crazy hard to get here and have learned a ton.
+World War II Weapons Finder is a command line application that searches through various weapons used in World War II. This CLI uses associations between Weapons, Countries, and Types of Weapons. Each weapon also potentially has three characteristics. This CLI will ask for User input, and provide information about weapons based off of the input.
 
-For your final project, we'll be building a Command Line database application.
+## Using the application
+In this application, a User is able to pick a list of countries, weapons, or category of weapons.If a User selects a list of countries, they can find the following information:
 
-## Project Requirements
+- All weapons
+- All types
+- Show most popular type of weapon
+- Show weapon with highest caliber
+- Show heaviest weapon
+- Show weapon with longest range
 
-### Option One - Data Analytics Project
+If a User selects a list of weapons, they can find the following information:
 
-1. Access a Sqlite3 Database using ActiveRecord.
-2. You should have at minimum three models including one join model. This means you must have a many-to-many relationship.
-3. You should seed your database using data that you collect either from a CSV, a website by scraping, or an API.
-4. Your models should have methods that answer interesting questions about the data. For example, if you've collected info about movie reviews, what is the most popular movie? What movie has the most reviews?
-5. You should provide a CLI to display the return values of your interesting methods.  
-6. Use good OO design patterns. You should have separate classes for your models and CLI interface.
+- Show country
+- Show type of weapon
+- Show characteristics of that weapon
 
-### Option Two - Command Line CRUD App
+If a User selects a list of categories, they can find the following information:
 
-1. Access a Sqlite3 Database using ActiveRecord.
-2. You should have a minimum of three models.
-3. You should build out a CLI to give your user full CRUD ability for at least one of your resources. For example, build out a command line To-Do list. A user should be able to create a new to-do, see all todos, update a todo item, and delete a todo. Todos can be grouped into categories, so that a to-do has many categories and categories have many to-dos.
-4. Use good OO design patterns. You should have separate models for your runner and CLI interface.
+- All weapons
+- All countries
+- What country has the most of this type?
+- Which weapon of this type has the lowest caliber?
+- Which weapon of this type has the lightest weight?
+- Which weapon of this type has the shortest range?
 
-### Brainstorming and Proposing a Project Idea
+## Installation Instructions
+In order you use this application
+1. Open your terminal and change your directory to the root of the app.
+2. Run `bundle install` to install all required gems
 
-Projects need to be approved prior to launching into them, so take some time to brainstorm project options that will fulfill the requirements above.  You must have a minimum of four [user stories](https://en.wikipedia.org/wiki/User_story) to help explain how a user will interact with your app.  A user story should follow the general structure of `"As a <role>, I want <goal/desire> so that <benefit>"`. In example, if we were creating an app to randomly choose nearby restaurants on Yelp, we might write:
+To start the application type `ruby bin/run.rb`
 
-* As a user, I want to be able to enter my name to retrieve my records
-* As a user, I want to enter a location and be given a random nearby restaurant suggestion
-* As a user, I should be able to reject a suggestion and not see that restaurant suggestion again
-* As a user, I want to be able to save to and retrieve a list of favorite restaurant suggestions
+## Contributor's Guide
+ Before working with this application, you will need to run `bundle install` which will download the following gems:
+  1. sinatra-activerecord
+  2. sqlite3
+  3. pry
+  4. require_all
+  5. rake
+  6. nokogiri
 
-## Instructions
+  Of these gems, the most important gem was Nokogiri, because it was required to scrape https://ww2db.com/, which is where we retrieved information about the weapons to seed the database. If you wanted to add more characteristics for each weapon, you could modify the following code in 'lib/scraper.rb'.
 
-1. Fork and clone this repository.
-2. Build your application. Make sure to commit early and commit often. Commit messages should be meaningful (clearly describe what you're doing in the commit) and accurate (there should be nothing in the commit that doesn't match the description in the commit message). Good rule of thumb is to commit every 3-7 mins of actual coding time. Most of your commits should have under 15 lines of code and a 2 line commit is perfectly acceptable.
-3. Make sure to create a good README.md with a short description, install instructions, a contributors guide and a link to the license for your code.
-4. Make sure your project checks off each of the above requirements.
-5. Prepare a video demo (narration helps!) describing how a user would interact with your working project.
-    * The video should:
-      - Have an overview of your project.(2 minutes max)
-6. Prepare a presentation to follow your video.(3 minutes max)
-    * Your presentation should:
-      - Describe something you struggled to build, and show us how you ultimately implemented it in your code.
-      - Discuss 3 things you learned in the process of working on this project.
-      - Address, if anything, what you would change or add to what you have today?
-      - Present any code you would like to highlight.   
-7. *OPTIONAL, BUT RECOMMENDED*: Write a blog post about the project and process.
+  ```
+  code.each_with_index do |x,i|
+    if x.text == "NAME OF ATTRIBUTE"
+      puts "Getting values for #{hash[:name]}"
+      hash[:NAME OF ATTRIBUTE] = code[i+1].text
+    end
+
+    ...
+
+  end
+  ```
+## License
+World War II Weapons Finder is released under the MIT License:
+
+- https://opensource.org/licenses/MIT
+
+## Video Demonstration 
+
+- https://www.youtube.com/watch?v=o09KS8KTM-A&feature=youtu.be
