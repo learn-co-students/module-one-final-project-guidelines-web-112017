@@ -60,3 +60,7 @@ To start the application type `ruby bin/run.rb`
 World War II Weapons Finder is released under the MIT License:
 
 - https://opensource.org/licenses/MIT
+
+## Video Demonstration 
+
+- https://www.youtube.com/watch?v=o09KS8KTM-A&feature=youtu.be
