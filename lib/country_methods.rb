@@ -40,9 +40,9 @@ def most_popular_type_by_country(country_input)
   a=Country.find(country_input).weapons.map do |weapon|
     weapon.type
   end
-  freq = a.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
+  freq = a.inject(Hash.new(0)) { |key,value| key[value] += 1; key }
   star_divider
-  puts a.max_by { |v| freq[v] }.name
+  puts a.max_by { |value| freq[value] }.name
 end
 
 def country_highest_caliber_weapon(country_input)
