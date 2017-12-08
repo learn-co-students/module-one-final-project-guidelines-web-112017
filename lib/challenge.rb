@@ -85,7 +85,7 @@ class Challenge
     else
       prez = President.find_by(name: input)
     end
-    if prez
+    if prez && picked_prezzies.exclude?(prez)
       picked_prezzies << prez
       prez
     else
