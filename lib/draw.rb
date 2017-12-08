@@ -42,7 +42,6 @@ class Drawing
     ln_arr << "YYYYYYYbbbWWwwwwwbbBBBBBBBBBBYYY"
     ln_arr << "YYYYYYbbBBWWWwwwwbBBBBBBBBBBBYYY"
 
-
     ln_arr.each {|ln| draw_line(ln.split(""))}
     puts ""
     puts "* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
