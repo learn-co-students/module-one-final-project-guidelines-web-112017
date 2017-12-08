@@ -43,9 +43,9 @@ def most_popular_country_by_type(type_input)
     weapon.countries[0]
   end
 
-  freq = a.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
+  freq = a.inject(Hash.new(0)) { |key,value| key[value] += 1; key }
   star_divider
-  puts a.max_by { |v| freq[v] }.name
+  puts a.max_by { |value| freq[value] }.name
 end
 
 def type_lowest_caliber_weapon(type_input)
@@ -56,13 +56,15 @@ def type_lowest_caliber_weapon(type_input)
     end
   end
   a=hash.sort_by {|_key, value| value}.first
+
     if a == nil
       star_divider
-      puts "There is no caliber for this type."
+      puts "All type calibers for #{Type.find(type_input).name} are unknown."
     else
       star_divider
       puts "#{a[0]} with a caliber of #{a[1]} mm"
-  end
+    end
+
   nil
 end
 
@@ -74,13 +76,15 @@ def type_lightest_weapon(type_input)
     end
   end
   a=hash.sort_by {|_key, value| value}.first
+
     if a == nil
       star_divider
-      puts "There is no weight for this type."
+      puts "All type weights for #{Type.find(type_input).name} are unknown."
     else
       star_divider
       puts "#{a[0]} with a weight of #{a[1]} kg"
-  end
+    end
+
   nil
 end
 
@@ -92,13 +96,15 @@ def type_shortest_range_weapon(type_input)
     end
   end
   a=hash.sort_by {|_key, value| value}.first
+
     if a == nil
       star_divider
-      puts "There is no range for this type."
+      puts "All type ranges for #{Type.find(type_input).name} are unknown."
     else
       star_divider
       puts "#{a[0]} with a range of #{a[1]} m"
-  end
+    end
+
   nil
   end
 

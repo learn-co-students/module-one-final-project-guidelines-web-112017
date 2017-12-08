@@ -54,8 +54,15 @@ def country_highest_caliber_weapon(country_input)
   end
 
   a=hash.sort_by {|_key, value| value}.last
-  star_divider
-  puts "#{a[0]} with a caliber of #{a[1]} mm"
+
+  if a == nil
+    star_divider
+    puts "All weapon calibers for #{Country.find(country_input).name} are unknown."
+  else
+    star_divider
+    puts "#{a[0]} with a caliber of #{a[1]} mm"
+  end
+
   nil
 end
 
@@ -68,8 +75,15 @@ def country_heaviest_weapon(country_input)
   end
 
   a=hash.sort_by {|_key, value| value}.last
-  star_divider
-  puts "#{a[0]} with a weight of #{a[1]} kg"
+
+  if a == nil
+    star_divider
+    puts "All weapon weights for #{Country.find(country_input).name} are unknown."
+  else
+    star_divider
+    puts "#{a[0]} with a weight of #{a[1]} kg"
+  end
+
   nil
 end
 
@@ -82,8 +96,15 @@ def country_longest_range_weapon(country_input)
   end
 
   a=hash.sort_by {|_key, value| value}.last
-  star_divider
-  puts "#{a[0]} with a range of #{a[1]} m"
+
+  if a == nil
+    star_divider
+    puts "All weapon ranges for #{Country.find(country_input).name} are unknown."
+  else
+    star_divider
+    puts "#{a[0]} with a range of #{a[1]} m"
+  end
+
   nil
 end
 
