@@ -43,9 +43,9 @@ def most_popular_country_by_type(type_input)
     weapon.countries[0]
   end
 
-  freq = a.inject(Hash.new(0)) { |key,value| key[value] += 1; key }
+  freq = a.inject(Hash.new(0)) { |hash, arr_element| hash[arr_element] += 1; hash }
   star_divider
-  puts a.max_by { |value| freq[value] }.name
+  puts a.max_by { |arr_element| freq[arr_element] }.name
 end
 
 def type_lowest_caliber_weapon(type_input)
